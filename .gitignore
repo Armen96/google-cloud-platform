@@ -104,3 +104,4 @@ dist
 .tern-port
 
 app-engine/node_modules
+k8s-image/node_modules
