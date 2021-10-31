@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web
+  labels:
+    app: nodejs-image-demo
+    env: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-image-demo
+  template:
+    metadata:
+      labels:
+        app: nodejs-image-demo
+    spec:
+      containers:
+        - name: my-web
+          image: 16041996/nodejs-image-demo:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-web
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-web
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
