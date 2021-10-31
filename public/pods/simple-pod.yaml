@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-web
+  labels:
+    env: prod
+    app: main
+    tier: front
+spec:
+  containers:
+    - name: test1
+      image: 16041996/nodejs-image-demo:latest
+      ports:
+        - containerPort: 8080
