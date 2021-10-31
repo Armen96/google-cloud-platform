@@ -11,4 +11,4 @@ spec:
     - name: test1
       image: 16041996/nodejs-image-demo:latest
       ports:
-        - containerPort: 8080
+        - containerPort: 80
