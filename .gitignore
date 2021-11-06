@@ -105,3 +105,5 @@ dist
 
 app-engine/node_modules
 k8s-image/node_modules
+functions/node_modules
+*/node_modules
