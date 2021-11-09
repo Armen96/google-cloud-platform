@@ -1,0 +1,30 @@
+# Cloud SQL
+gcloud sql connect my-first-cloud-sql-instance --user=root --quiet
+gcloud config set project glowing-furnace-304608
+gcloud sql connect my-first-cloud-sql-instance --user=root --quiet
+
+use todos
+create table users (
+    id int,
+    last_name varchar(255),
+    first_name varchar(255)
+);
+describe users;
+insert into users values (1, 'armen', 'barsegyan');
+select * from users;
+
+# Cloud Spanner
+CREATE TABLE Users (
+  UserId   INT64 NOT NULL,
+  UserName  STRING(1024)
+) PRIMARY KEY(UserId);
+
+
+# Cloud BigTable
+bq show bigquery-public-data:samples.shakespeare
+
+gcloud --version
+cbt listinstances -project=glowing-furnace-304608
+echo project = glowing-furnace-304608 > ~/.cbtrc
+cat ~/.cbtrc
+cbt listinstances
