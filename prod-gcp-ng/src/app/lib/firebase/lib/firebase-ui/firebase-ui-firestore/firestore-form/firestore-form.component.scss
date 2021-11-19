@@ -1,0 +1,65 @@
+@import "src/scss/main";
+
+.form{
+  padding: 1rem;
+  .element{
+    padding: 1rem;
+  }
+}
+
+.form-row{
+  display: flex;
+  app-firestore-form-element{
+    flex: 1;
+    margin: 0 0 0 .5rem;
+  }
+}
+
+.mat-icon-button{
+  margin-top: 14px;
+}
+
+mat-form-field{
+  width: 100%;
+}
+
+.cdk-drag-preview {
+  opacity: 0.8;
+}
+
+.cdk-drag-placeholder {
+  background: mat-color($mat-yellow, 50);
+  border-bottom: mat-color($mat-yellow, 100) 1px solid;
+  border-top: mat-color($mat-yellow, 100) 1px solid;
+  padding: .2rem 0;
+  margin: -1rem -1rem 1rem -1rem;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.add-element{
+  padding: 1rem;
+  margin: 1rem -16px -16px -16px;
+  border-top: ui-light(3) 1px solid;
+  display: flex;
+  align-items: center;
+  mat-form-field{
+    flex: 1;
+    margin-right: 1rem;
+  }
+}
+
+app-firestore-form-element{
+  display: block;
+}
+
+.delete-button {
+  margin-left: 10px;
+}
+
+.cancel-button {
+  margin-left: 10px;
+  background-color: mat-color($mat-grey, 200);
+}

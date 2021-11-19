@@ -1,0 +1,9 @@
+<span class="lookup" *ngIf="document">
+  <ng-container *ngIf="(field == 'email' || field == 'phone') && hrefLink; else labelDefault">
+    <a [href]="hrefLink + label">{{ label}}</a>
+  </ng-container>
+</span>
+
+<ng-template #labelDefault>
+  {{label}}
+</ng-template>

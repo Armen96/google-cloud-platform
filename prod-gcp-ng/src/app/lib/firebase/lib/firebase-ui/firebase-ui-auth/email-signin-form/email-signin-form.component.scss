@@ -1,0 +1,29 @@
+@import "~@angular/material/theming";
+
+mat-form-field{
+  display: block;
+}
+
+.title{
+  display: flex;
+  align-items: center;
+  h1{
+    flex: 1;
+    margin: 0;
+  }
+  margin-bottom: 2.5rem;
+}
+
+.success{
+  color: mat-color($mat-green, 400);
+  display: flex;
+  align-items: center;
+  mat-icon{
+    margin-right: .5rem;
+  }
+}
+
+mat-expansion-panel{
+  margin-bottom: 2rem;
+  background: mat-color($mat-gray, 100);
+}

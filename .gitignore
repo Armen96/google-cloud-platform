@@ -106,4 +106,5 @@ dist
 app-engine/node_modules
 k8s-image/node_modules
 functions/node_modules
+prod-gcp-ng/node_modules
 */node_modules

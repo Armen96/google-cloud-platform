@@ -1,0 +1,155 @@
+<div class="firestore-form-element">
+  <div class="control" [ngSwitch]="type"  *ngIf="visible || ( editable && ! edit)">
+    <!-- text area -->
+    <mat-form-field class="form-field input" [ngStyle]="formFieldStyle" appearance="outline" *ngSwitchCase="'textarea'">
+      <mat-label>{{placeholder}}</mat-label>
+      <textarea matInput
+                [name]="id"
+                [placeholder]="placeholder"
+                [rows]="rows"
+                cdkTextareaAutosize
+                [cdkAutosizeMinRows]="rows"
+                [(ngModel)]="value"
+                (change)="handleChange()"
+                autocomplete="off"
+                [disabled]="disabled || element.hidden || ! visible"
+                [required]="required"></textarea>
+    </mat-form-field>
+
+    <!-- select -->
+    <mat-form-field class="form-field input" [ngStyle]="formFieldStyle" appearance="outline" *ngSwitchCase="'select'">
+      <mat-label>{{placeholder}}</mat-label>
+      <mat-select [(ngModel)]="value" [name]="id" (selectionChange)="handleChange()" [disabled]="disabled || element.hidden || ! visible" [required]="required">
+        <mat-option *ngFor="let opt of selectOptions" [value]="opt.id" [disabled]="opt.disabled ? true : false">
+          {{opt.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- radio group -->
+    <mat-radio-group aria-label="Select an option"  *ngSwitchCase="'radio_group'" [(ngModel)]="value" [name]="id" (change)="handleChange()" [disabled]="disabled || element.hidden || ! visible">
+      <mat-label>{{placeholder}}</mat-label>
+      <mat-radio-button *ngFor="let opt of selectOptions" [value]="opt.id">{{opt.label}}</mat-radio-button>
+    </mat-radio-group>
+
+    <!-- checkbox -->
+    <mat-checkbox [value]="true" *ngSwitchCase="'checkbox'" [(ngModel)]="value" [name]="id" (change)="handleChange()" [disabled]="disabled || element.hidden || ! visible">{{placeholder}}</mat-checkbox>
+
+
+    <!-- Calc field -->
+    <mat-form-field class="form-field input" [ngStyle]="formFieldStyle" appearance="outline" *ngSwitchCase="'calc_field'">
+      <mat-label>{{placeholder}} - Calculation Field</mat-label>
+      <input matInput readonly
+        [value]="calcFieldValues[id] || ''"
+        (change)="handleChange()"
+        [placeholder]="placeholder"
+        type="text"
+        [name]="id"
+        autocomplete="off"
+      >
+    </mat-form-field>
+
+    <!-- input (default) -->
+    <mat-form-field class="form-field input" [ngStyle]="formFieldStyle" appearance="outline" *ngSwitchDefault>
+      <mat-label>{{placeholder}}</mat-label>
+      <input
+        *ngIf="id !== 'street_address'"
+        matInput
+        [type]="type !== 'hidden' ? type : ''"
+        [name]="id"
+        [placeholder]="placeholder"
+        [(ngModel)]="value"
+        (change)="handleChange()"
+        autocomplete="off"
+        [disabled]="disabled || element.hidden || ! visible"
+        [required]="required">
+
+      <input
+        *ngIf="id === 'street_address'"
+        matInput
+        ngx-google-places-autocomplete
+        autocomplete="off"
+        [type]="type"
+        [name]="id"
+        [(ngModel)]="value"
+        [placeholder]="placeholder"
+        [options]="options"
+        #placesRef="ngx-places"
+        [disabled]="disabled || element.hidden || ! visible"
+        [required]="required"
+        (onAddressChange)="selectGoogleAddressStatus = true; googleAddressChange($event)"
+        (change)="handleGoogleInputChange()"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="edit-control" *ngIf="edit">
+    <div class="toolbar">
+      <h3>#{{element.id}}</h3>
+      <button mat-icon-button (click)="hide()" [disabled]="element.protected" title="Click here to hide this field">
+        <mat-icon>{{element.hidden ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </div>
+
+    <div class="element-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Placeholder / Label</mat-label>
+        <input matInput (change)="notify()" [(ngModel)]="element.placeholder" placeholder="Placeholder / Label"  [autocomplete]="false">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Field Type</mat-label>
+        <mat-select [(ngModel)]="element.type" (selectionChange)="notify()" [disabled]="element.protected || (collection === 'opportunities' && if3DefaultFields[element.id])">
+          <mat-option *ngFor="let t of types" [value]="t.id">{{t.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="element-options" [ngSwitch]="element.type" *ngIf="! element.protected">
+        <div class="options-form" *ngSwitchCase="'textarea'">
+          <mat-form-field appearance="outline">
+            <mat-label>Rows</mat-label>
+            <input matInput type="number" (change)="notify()" [(ngModel)]="element.rows" placeholder="Number of rows" [autocomplete]="false">
+          </mat-form-field>
+        </div>
+        <div class="options-form"  *ngSwitchCase="'select'">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Options</mat-label>
+            <input matInput (change)="notify()" [(ngModel)]="csvOptions" placeholder="Comma separated list of options" [autocomplete]="false">
+          </mat-form-field>
+        </div>
+        <div class="options-form"  *ngSwitchCase="'radio_group'">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Options</mat-label>
+            <input matInput (change)="notify()" [(ngModel)]="csvOptions" placeholder="Comma separated list of options" [autocomplete]="false">
+          </mat-form-field>
+        </div>
+
+        <div class="options-form"  *ngSwitchCase="'calc_field'">
+          <mat-form-field class="form-field input" appearance="outline" *ngSwitchCase="'calc_field'">
+            <mat-label>{{placeholder}}</mat-label>
+            <input matInput *ngIf="calcItems"
+                   [(ngModel)]="element.value"
+                   (change)="updateCalcValueInDocument(); notify()"
+                   [placeholder]="placeholder"
+                   type="text"
+                   autocomplete="off"
+                   [mention]="calcItems"
+                   [mentionConfig]="{triggerChar:'#', maxItems: 50, labelKey: 'id',  dropUp: true}"
+            >
+          </mat-form-field>
+        </div>
+
+        <div class="options-form" *ngSwitchDefault></div>
+      </div>
+
+      <mat-checkbox [(ngModel)]="element.required" (change)="notify()" *ngIf="enableRequired">Required</mat-checkbox>
+    </div>
+
+  </div>
+
+  <button mat-icon-button *ngIf="editable" (click)="toggleEdit(); fieldLevelSave()">
+    <mat-icon *ngIf="! edit">edit</mat-icon>
+    <mat-icon *ngIf="edit">save</mat-icon>
+  </button>
+
+</div>

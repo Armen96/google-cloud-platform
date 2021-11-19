@@ -1,0 +1,12 @@
+<div class="firestore-collection">
+  <div class="loading"  *ngIf="! loaded">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <div class="message" *ngIf="loaded && ! hasData && emptyDataMessage">
+    {{emptyDataMessage}}
+  </div>
+  <ng-content></ng-content>
+</div>
+
+

@@ -1,0 +1,72 @@
+<ng-container *ngIf="elements as elementsData">
+  <form *ngIf="_form" (ngSubmit)="save()" class="form"  #fsForm="ngForm"  cdkDropList (cdkDropListDropped)="drop($event)"  [cdkDropListData]="elementsData" [cdkDropListDisabled]="! editable">
+    <ng-container *ngIf="customStyles">
+      <div class="form-row" [ngStyle]="customStyles" *ngFor="let el of elementsData" cdkDrag [cdkDragData]="el">
+        <ng-container *ngIf="showHiddenFields || el.type !== 'hidden'">
+          <button mat-icon-button *ngIf="sortable" cdkDragHandle>
+            <mat-icon>import_export</mat-icon>
+          </button>
+
+          <app-firestore-form-element
+            [collection]="collection"
+            [document]="docId"
+            [documentObject]="docObject"
+            [autosave]="autosave"
+            [editable]="editable"
+            [element]="el"
+            [disabled]="disabled"
+            [showHiddenFields]="showHiddenFields"
+            [calcItems]="calcItems"
+            [calcFields]="calcFields"
+            [calcFieldsRender]="calcFieldsRender"
+            (changed)="handleChange($event)"
+            (saved)="handleSave($event)"
+            (edited)="handleEdited($event)"
+          ></app-firestore-form-element>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!customStyles">
+      <div class="form-row" *ngFor="let el of elementsData" cdkDrag [cdkDragData]="el">
+        <ng-container *ngIf="showHiddenFields || el.type !== 'hidden'">
+          <button mat-icon-button *ngIf="sortable" cdkDragHandle>
+            <mat-icon>import_export</mat-icon>
+          </button>
+
+          <app-firestore-form-element
+            [collection]="collection"
+            [document]="docId"
+            [documentObject]="docObject"
+            [autosave]="autosave"
+            [editable]="editable"
+            [element]="el"
+            [disabled]="disabled"
+            [showHiddenFields]="showHiddenFields"
+            [calcItems]="calcItems"
+            [calcFields]="calcFields"
+            [calcFieldsRender]="calcFieldsRender"
+            (changed)="handleChange($event)"
+            (saved)="handleSave($event)"
+            (edited)="handleEdited($event)"
+          ></app-firestore-form-element>
+        </ng-container>
+      </div>
+    </ng-container>
+
+
+    <div class="actions">
+      <button *ngIf="! autosave && ! disabled && ! disableSave" mat-flat-button color="primary" type="submit" [disabled]="!fsForm.form.valid">{{saveButtonMessage}}</button>
+      <button *ngIf="deleteOption" class="delete-button" mat-flat-button color="warn" type="button" (click)="deleteDocument()">{{deleteButtonMessage}}</button>
+      <button *ngIf="isCancelable" class="cancel-button" mat-flat-button color="#222" (click)="cancel.emit()">Cancel</button>
+    </div>
+
+    <div class="add-element" *ngIf="editable">
+      <mat-form-field appearance="outline">
+        <input matInput type="text" (change)="notify()" [(ngModel)]="newElement" placeholder="Field Placeholder / Label" [autocomplete]="false" name="newElement">
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="addElement()" [disabled]="! newElement">Add Field</button>
+    </div>
+  </form>
+</ng-container>
+
