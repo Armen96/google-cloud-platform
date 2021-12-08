@@ -3,7 +3,7 @@ runtime: nodejs14
 # [END gae_quickstart_yaml]
 
 # Application service name
-service: my-first-service
+service: default
 
 # instance class
 instance_class: F1
