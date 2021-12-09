@@ -443,6 +443,21 @@
                 });
             } // End if
         });
+
+        $.ajax({
+            url: "https://categories-dot-gcp-done-stage1.uc.r.appspot.com/categories",
+            method: 'GET',
+            cors: true ,
+            contentType:'application/json',
+            secure: true,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+            success: function(html){
+                console.log(html);
+                $("#results").append(html);
+            }
+        });
     })
 </script>
 
