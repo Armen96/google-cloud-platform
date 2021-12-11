@@ -21,4 +21,7 @@ gcloud app services set-traffic default --splits=v1=0.5,v2=0.5 --split-by=random
 Split by random, ip or by cookie
 ```
 
+### App Engine standard
+### App Engine flexible ~ Cloud Run
+
 
