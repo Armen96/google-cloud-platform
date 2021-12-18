@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/gcp-done-stage1/lab-report-service', '.' ]
+images:
+  - 'gcr.io/gcp-done-stage1/lab-report-service'
