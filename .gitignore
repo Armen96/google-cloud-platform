@@ -109,4 +109,5 @@ functions/node_modules
 prod-gcp-ng/node_modules
 pubsub/node_modules
 cloudRun/image-1/node_modules
+BigQuery/node_modules
 */node_modules
